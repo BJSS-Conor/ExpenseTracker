@@ -28,7 +28,7 @@ namespace ExpensesAPI.Tests.Services
             {
                 new Expense("Lunch", 15, new DateTime(2024,11,25)),
                 new Expense("Train", 25, new DateTime(2024,11,25)),
-                new Expense("Hotel", 30, new DateTime(2024,11,25))
+                new Expense("Hotel", 30, new DateTime(2024,10,25))
             });
             _expensesDbContext.SaveChanges();
 
@@ -43,10 +43,24 @@ namespace ExpensesAPI.Tests.Services
             {
                 new Expense() { Id = 1, Description = "Lunch", Amount = 15, Date = new DateTime(2024,11,25) },
                 new Expense() { Id = 2, Description = "Train", Amount = 25, Date = new DateTime(2024,11,25) },
-                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,11,25) }
+                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,10,25) }
             };
             
             Assert.That(expenses, Is.EqualTo(expectedExpenses));
+        }
+
+        [Test]
+        public async Task GetExpensesByMonth_Test()
+        {
+            int month = 10;
+            List<Expense> expected = new List<Expense>() 
+            {                
+                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,10,25) }
+            };
+
+            List<Expense> result = await _expensesService.GetExpensesByMonth(month);
+
+            Assert.That(expected, Is.EqualTo(result));
         }
 
         [Test]
@@ -63,7 +77,7 @@ namespace ExpensesAPI.Tests.Services
             {
                 new Expense() { Id = 1, Description = "Lunch", Amount = 15, Date = new DateTime(2024,11,25) },
                 new Expense() { Id = 2, Description = "Train", Amount = 25, Date = new DateTime(2024,11,25) },
-                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,11,25) },
+                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,10,25) },
                 new Expense() { Id = 4, Description = "Dinner", Amount = 27, Date = new DateTime(2024, 12, 5) }
             };
             List<Expense> resultingExpenses = await _expensesService.GetAllExpenses();
@@ -78,7 +92,7 @@ namespace ExpensesAPI.Tests.Services
             List<Expense> expectedExpenses = new List<Expense>()
             {
                 new Expense() { Id = 1, Description = "Lunch", Amount = 15, Date = new DateTime(2024,11,25) },                
-                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,11,25) },                
+                new Expense() { Id = 3, Description = "Hotel", Amount = 30, Date = new DateTime(2024,10,25) },                
             };
 
             await _expensesService.DeleteExpense(index);

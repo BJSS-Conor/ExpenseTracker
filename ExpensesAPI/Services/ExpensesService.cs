@@ -18,6 +18,12 @@ namespace ExpensesAPI.Services
             return await _context.Expenses.ToListAsync();
         }
 
+        public async Task<List<Expense>> GetExpensesByMonth(int month)
+        {
+            List<Expense> expenses = await _context.Expenses.Where(e => e.Date.Month == month).ToListAsync();
+            return expenses;
+        }
+
         public async Task<Expense> CreateExpense(CreateExpenseRequest expenseRequest) 
         { 
             Expense expense = new Expense(expenseRequest.Description, expenseRequest.Amount, expenseRequest.Date);
